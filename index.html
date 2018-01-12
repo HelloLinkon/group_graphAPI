@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test</title>
+</head>
+<body>
+<button name="my_full_name" onclick="ShowMyName()">Name</button>
+<div id="feeds">
+	
+</div>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+<script language="javascript" type="text/javascript">
+function ShowMyName() {
+        FB.api("/1379865322052657/members",
+
+        {
+		  access_token: "EAAZAnzzkM1RQBAJLqqisiyJ2i6ffXZCuqiAXyZBNyyo6HMB6DHap1iVMwKcWeZAAVAAyPEKXeuyQfUZCQKgqVAl9LxdZBLfBRJ9D3ZBf3TDmaBZBZCEahb5jw5zInp1yJ3acPC7e6MZBIxanc4rbVSM5iZAvGGdvVkIP9rdAMMHDN4JoNG3EZAVw7xkfOlmR4eFnZArUrUy0jKZBWn9QZDZD"
+		  //other parameters can go here aswell
+
+		},
+
+        function (response) {
+                    console.log(response.data);
+                    
+                    for(var i=0;i<response.data.length;i++)
+                    {
+                    	
+                    	$('#feeds').append(response.data[i].name+" <a href='https://web.facebook.com/"+response.data[i].id+"'>visit profile<hr>");
+                    }
+                    next(response.paging.next);
+         });
+         
+    }
+
+function next(url){
+	$.ajax({
+
+		url: url,
+		dataType: "json",
+		success: function(response){
+			console.log("success");
+			// console.log(data);
+			for(var i=0;i<response.data.length;i++)
+                    {
+                    	
+                    	$('#feeds').append(response.data[i].name+" <a href='https://web.facebook.com/"+response.data[i].id+"'>visit profile<hr>");
+                    }
+            if(response.paging.next)
+            next(response.paging.next);
+		}
+	});
+}
+</script>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId            : '1802989573297428',
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v2.11'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+
+</script>
+
+</body>
+</html>
